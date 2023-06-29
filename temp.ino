@@ -1,17 +1,17 @@
 /*------------------------------------------------------------------*
-Uses 9 bytes of EEPROM to store the Frequency and phase
+Uses 9 short ints of EEPROM to store the Frequency and phase
 
 
 *------------------------------------------------------------------*/
 class AD9850 {
   private:
-    byte _wclk, _fqud, _reset, _data;
+    short int _wclk, _fqud, _reset, _data;
     double frequency;
-    byte phase;
-    byte at;
-    boolean x2;
+    short int phase;
+    short int at;
+    bool x2;
 
-    void tfr_byte(byte d) {
+    void tfr_byte(short int d) {
       for (int i = 0; i < 8; i++, d >>= 1) {
         digitalWrite(this->_data, d & 0x01);
         pulseHigh(this->_wclk);
@@ -19,7 +19,7 @@ class AD9850 {
     }
 
   public:
-    AD9850(byte at, byte wclk, byte fqud, byte rst, byte dta) {
+    AD9850(short int at, short int wclk, short int fqud, short int rst, short int dta) {
       this->_wclk = wclk;
       this->_fqud = fqud;
       this->_reset = rst;
@@ -43,7 +43,6 @@ class AD9850 {
       }
       tfr_byte(this->phase & 0xf0);
       pulseHigh(this->_fqud);
-      blynk = !blynk;
     }
 
     void set(double frequency, int phaze) {
@@ -64,6 +63,7 @@ class AD9850 {
       return this->frequency;
     }
 
-    byte getPhase() {
+    short int getPhase() {
       return this->phase;
     }
+};
